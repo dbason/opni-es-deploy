@@ -1,0 +1,25 @@
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterOutput
+metadata:
+  name: opni-es-direct
+  namespace: cattle-logging-system
+spec:
+  elasticsearch:
+    buffer:
+      flush_interval: 30s
+      flush_mode: interval
+      flush_thread_count: 4
+      queued_chunks_limit_size: 300
+      type: file
+    host: <elastic.host.name>
+    index_name: logs
+    log_es_400_reason: true
+    password:
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: es-password
+    port: 443
+    scheme: https
+    user: admin
+    with_transporter_log: true
