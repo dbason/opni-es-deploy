@@ -39,8 +39,8 @@
         N.B. The included values will create an opendistro deploy with 1 master, 2 workers, and 1 ingres/client node.  All of the nodes have dedicated memory that is double the Java settings.  The data nodes have 4Gi of memory (2g in the Java settings) and 25Gi of allocated storage.
         The values also create ingresses for Kibana and the ingest node.
 
-## Set up log shipping
-1) Install the Rancher logging application
+## Set up log shipping in the simulation cluster
+1) Install the Rancher logging application in the cluster you want to ship logs
 1) Create a secret with the opendistro-es password in it
     ```sh
     kubectl apply -f examples/logging/es-password.yaml
