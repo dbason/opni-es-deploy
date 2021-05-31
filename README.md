@@ -26,7 +26,7 @@
         ```sh
         cd ..
         git clone https://github.com/opendistro-for-elasticsearch/opendistro-build.git
-        helm package opendistro-build/helm
+        helm package opendistro-build/helm/opendistro-es
         ```
     1) Create a release of the opendistro-es chart
         ```sh
