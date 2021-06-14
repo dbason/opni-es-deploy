@@ -1,14 +1,21 @@
 kibana:
-  ingress:
-    enabled: true
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod # Remove this annotation if not using cert-manager
-    hosts:
-    - <kibana.host.name>
-    tls:
-    - secretName: opni-kibana-external-ssl
-      hosts:
-      - <kibana.host.name>
+
+  ## Uncomment the following block to use an ingress
+  # ingress:
+  #  enabled: true
+  #  annotations:
+  #    cert-manager.io/cluster-issuer: letsencrypt-prod # Remove this annotation if not using cert-manager
+  #  hosts:
+  #  - opni-kibana.danbason.dev
+  #  tls:
+  #  - secretName: opni-kibana-external-ssl
+  #    hosts:
+  #    - opni-kibana.danbason.dev
+
+  ## Uncomment the following block to use a LoadBalancers service
+  # service:
+  #  type: LoadBalancer
+
 elasticsearch:
   master:
     resources:
@@ -32,15 +39,21 @@ elasticsearch:
         memory: 1Gi
       requests:
         memory: 1Gi
-    ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod # Remove this annotation if not using cert-manager
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      hosts:
-      - opni-elastic.danbason.dev
-      tls:
-      - secretName: opni-elastic-external-ssl
-        hosts:
-        - opni-elastic.danbason.dev
+
+    ## Uncomment the following block to use an ingress
+    # ingress:
+    #  enabled: true
+    #  annotations:
+    #    cert-manager.io/cluster-issuer: letsencrypt-prod # Remove this annotation if not using cert-manager
+    #    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    #    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    #  hosts:
+    #  - <elasticsearch.hostname>
+    #  tls:
+    #  - secretName: opni-elastic-external-ssl
+    #    hosts:
+    #    - <elasticsearch.hostname>
+
+    ## Uncomment the following block to use a LoadBalancer service
+    # service:
+    #  type: LoadBalancer

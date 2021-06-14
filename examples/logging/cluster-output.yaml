@@ -11,8 +11,8 @@ spec:
       flush_thread_count: 4
       queued_chunks_limit_size: 300
       type: file
-    host: <elastic.host.name>
-    index_name: logs
+    host: <host to ship to> #Change this to either the elasticsearch client hostname, or the address from the LoadBalancer service
+    index_name: test
     log_es_400_reason: true
     password:
       valueFrom:

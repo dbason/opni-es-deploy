@@ -1,7 +1,7 @@
 # opni-es-deploy
 
 ## Prepare receiving cluster
-1) Install the [NGINX ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/).  For example to deploy on an EKS cluster use the following command:
+1) (Optional - Ignore this if using a LoadBalancer service) Install the [NGINX ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/).  For example to deploy on an EKS cluster use the following command:
     ```sh
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.46.0/deploy/static/provider/aws/deploy.yaml
     ```
@@ -22,6 +22,7 @@
         kubectl apply -f examples/cert-manager/cluster-issuer.yaml
         ```
 1) Install opendistro-es from the [helm chart](https://github.com/opendistro-for-elasticsearch/opendistro-build/tree/main/helm)
+    1) Edit the file in `examples/opendistro-es/values.yaml`.  Uncomment either the LoadBalancer service or ingress blocks for the kibana and elasticsearch.client sections.  If you are using an ingress you will also need to change the hostnames for the kibana and elasticsearch client endpoints.  You will need to have DNS entries pointing those hostnames to the cluster IP addresses.
     1) Checkout the opendistro code and package the chart
         ```sh
         cd ..
@@ -38,6 +39,10 @@
         ```
         N.B. The included values will create an opendistro deploy with 1 master, 2 workers, and 1 ingres/client node.  All of the nodes have dedicated memory that is double the Java settings.  The data nodes have 4Gi of memory (2g in the Java settings) and 25Gi of allocated storage.
         The values also create ingresses for Kibana and the ingest node.
+    1) If you are using LoadBalancer services you will need to get the hostname for the elasticsearch cluster to ship logs to.
+        ```sh
+        kubectl get svc -n opendistro-es opendistro-es-client-service --output jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+        ```
 
 ## Set up log shipping in the simulation cluster
 1) Install the Rancher logging application in the cluster you want to ship logs
@@ -45,6 +50,7 @@
     ```sh
     kubectl apply -f examples/logging/es-password.yaml
     ```
+1) Modify the examples/logging/cluster-output.yaml file to point to the Elasticsearch address.  You will need to modify the spec.elasticsearch.host field.
 1) Create a ClusterOutput that points to the hostname of the ingress for the ingest node
     ```sh
     kubectl apply -f examples/logging/cluster-output.yaml
